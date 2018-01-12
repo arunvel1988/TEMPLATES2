@@ -1,0 +1,51 @@
+---
+- hosts: core
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: obtain login
+    include_vars: creds.yaml
+  - name: define provider
+    set_fact:
+      provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ creds['username'] }}"
+        password: "{{ creds['password'] }}"
+
+  - name: show version
+    ios_command:
+      provider: "{{ provider }}"
+      commands:
+        - show version
+    register: version
+
+  - debug: var=version.stdout_lines
+
+
+  
+    
+
+
+
+    #  - name: configure interface settings
+    # ios_config:
+    #  provider: "{{ provider }}"
+    #      lines:
+    #    - description loopback interface
+    #    - ip address 2.2.2.2 255.255.255.0
+          #      parents: interface loopback0 
+      #  - name: rip configuration
+    #    ios_config#:
+    #      provider: "{{ provider }}"
+      #      lines:
+              #        - router eigrp 1
+          #        - network 2.2.2.0 0.0.0.255 
+          #        - network 10.0.0.0 0.0.0.255 
+     
+#  - name: load new acl into device
+#    ios_config:
+#     lines: 
+#        - 10 permit ip host 1.1.1.1 any log
+  
+      
