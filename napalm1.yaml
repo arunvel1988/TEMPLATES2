@@ -1,0 +1,31 @@
+---
+- hosts: core
+  connection: local
+  gather_facts: no
+
+  
+  
+    napalam_provider:
+      hostname: "{{ inventory_hostname }}"
+      username: "arun"
+      password: "123"
+      dev_os: "ios"
+    napalm_get_facts:
+           
+      provider: "{{ napalm_provider }}"       
+      filter:
+        - 'facts'
+        - 'interfaces'
+        - 'lldp_neighbors' 
+          
+      
+    register: result
+
+  - name: print result
+    debug: var=result
+
+
+ 
+
+
+
