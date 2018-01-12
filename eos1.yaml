@@ -1,0 +1,26 @@
+---
+- hosts: server
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: obtain login
+    include_vars: creds.yaml 
+  - name: define provider
+    set_fact:
+      provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ creds['username'] }}"
+        password: "{{ creds['password'] }}"  
+   
+  - name: vlan   
+    eos_command: connection={{ inventory_hostname }}
+      provider: "{{ provider }}"
+        args: {commands: '{{ item }}' }
+        with_items:
+          - show version
+
+    register: eos_command_output
+
+    
+  - debug: var=eos_command_output
