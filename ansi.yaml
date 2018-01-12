@@ -1,0 +1,311 @@
+---
+- hosts: core
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: obtain login
+    include_vars: creds.yaml
+  - name: define provider
+    set_fact:
+      provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ creds['username'] }}" 
+ 
+        password: "{{ creds['password'] }}"
+
+
+        #  - name: config loopbacks on cisco routers
+        #    ios_config:
+            #      src: intf.j2
+            #      src: intf.j2
+            #      src: eos.j2
+        
+        #      provider: "{{ provider }}"
+  - name: config vlans
+    ios_config:
+      src: vlans.j2
+           config.j2 
+      provider: "{{ provider }}"
+
+
+        #  - name: run commands
+        #    eos_command:
+        
+        #      provider: "{{ provider }}"
+        #      commands:
+        #          output: json         
+
+
+        #  - name: load #acl
+        #    eos_config#:
+        #      #lines:
+        #     - 10 permit ip 10.0.0.0/#24 any log
+        #      parents: ip access-list test
+        #      before: no ip access-#list test
+        #      replace: block
+
+  
+
+  
+          
+
+  
+
+
+#     - name: create vlan blue
+#    vlan: vlan_id=100 enable=yes name=pep
+ 
+#  - name: create vlan
+#    eos_vlan:
+#      vlan_id: 4000
+#      name: foo
+#      state: present 
+#  - name: Cre
+#    eos_vlan:
+      
+#      vlan_id: 4
+#      enable: yes
+#      name: pep
+#      state: present
+
+
+
+#  - name: ssh facts
+#    register: iosfacts_out
+#    ios_facts:
+#      provider: "{{ provider }}"
+#  - copy: content="{{ iosfacts_out | to_nice_json }}" 
+#         dest="/etc/{{inventory_hostname}}_iosfacts.json"
+
+
+        #  - name: crete #vlans
+        #    ios_config:
+        #      provider#: #"{{ provider }}" 
+        #      authorize: yes
+        #      lines#:
+        ##        - vlan 2
+        #        - vlan #3
+        #    register: print_output
+        #  - debug: var=print_output 
+        
+
+ 
+#  - name: sv
+#    ios_config:
+#      provider: "{{ provider }}"
+#      lines:
+#      - ip add {{ item.ip }} {{ item.mask }}
+#      - delay 200
+#      parents: interface {{ item.name }}
+#    with_items: "{{ svi_int }}"
+
+
+
+
+#  - name: show version
+#    ios_command:
+#      provider: "{{ provider }}"
+#      commands:
+#        - show version
+#    register: version
+
+#  - debug: var=version.stdout_lines
+
+#  - name: configure interface settings
+#    ios_config:
+#      provider: "{{ provider }}"
+#      lines:
+#        - description loopback interface
+#        - ip address 1.1.1.1 255.255.255.0
+#      parents: interface loopback0 
+#  - name: ospf configuration
+
+#    ios_config:
+#      provider: "{{ provider }}"
+#      lines:
+#        - router eigrp 1
+ 
+#        - network 10.0.0.0 0.0.0.255 
+ 
+#        - network 1.1.1.0 0.0.0.255 
+
+#  - name: configure static route
+#    ios_static_route:
+#      provider: "{{ provider }}"      
+#      prefix: 2.2.2.0
+#      mask: 255.255.255.0
+#      next_hop: 10.0.0.2
+      
+      
+      #  - name: load new acl #into device
+ 
+      #    ios_config#:
+      #      provider: "{{ provider }}"
+      #      lines: 
+      #        - 10 permit ip host 1.1.1.1 any log
+      #      parents: ip access-list extended test
+      #      before: no ip access-#list extended test
+      #      match: exact  
+ 
+
+#  - name: configure login banner
+#    ios_banner:
+#      provider: "{{ provider }}"
+#      banner: login
+#      text: 
+#        this is my login banner
+
+#      state: present     
+
+
+#  - name: configure service 
+#    ios_config: 
+#      provider: "{{ provider }}"
+#      lines:
+#        - no service pad
+#        - service timestamps debug uptime
+#        - service timestamps log uptime
+#        - service password-encryption
+
+#  - name: COnfigure snmp
+#    ios_config:
+ #     provider: "{{ provider }}"
+#      lines:
+#        - snmp-server group SNMPv3 v3 priv
+#      after:
+          
+#  - name: SET FACTS
+#    set_fact:
+#  - name: configure service 
+#    ios_config: 
+#      provider: "{{ provider }}"
+#      lines:
+#        - no service pad
+#        - service timestamps debug uptime
+#        - service timestamps log uptime
+#        - service password-encryption
+
+#  - name: COnfigure snmp
+#    ios_config:
+ #     provider: "{{ provider }}"
+#      lines:
+#        - snmp-server group SNMPv3 v3 priv
+#      after:
+          
+#  - name: SET FACTS
+#    set_fact:
+#      snmp_community: "snmp-server community MYCOMM RW"
+
+#  - name: get community
+#    register: snmp_config
+
+#    ios_command:
+#      provider: "{{ provider }}"
+#      commands:
+#        - "sh run | i snmp-server community MYCOMM RW"
+#  - name: SET COMMUNITY
+#    when: ("snmp_community != snmp_config.stdout_lines[0]")
+#    register: changed
+#   ios_config:
+#      provider: "{{ provider }}"
+#      lines:
+
+#        - snmp-server community MYCOMM RW
+
+
+#  - name: config
+#    ios_config:
+#      provider: "{{ provider }}"
+#      commands:
+#        - {{ item }}
+#    with_items:
+#      - ospf
+#      - bgp
+
+
+
+#  - name: Build configs
+#    template:
+#      src: ./vlan.j2
+#      dest: configs/vlan.cfg
+
+
+#  - name: ensure vlans
+#    ios_config:
+ #     provider: "{{ provider }}"
+  #
+
+  #  src: configs/vlan.cfg
+   
+   
+#  - name: template
+#    ios_template:
+#      provider: "{{ #provider }}"
+ #     authorize: true
+  #    backup: true
+   #   src: "{{ inventory_hostname }}.candidate_config.txt"
+     
+#    register: template
+#  - debug: var=template
+  
+
+#  - nxos_vlan:
+#      provider: "{{ provider }}"
+#      vlan_id: "{{item.id}}"
+#      state: "{{item.state | default('present') }}"
+#      admin_state: "{{ item.admin  | default('up') }}"
+#      name: "{{item.name}}"
+#    with_items: "{{vlans}}"
+ 
+#  - name: deploy snmp commands
+#    ios_config:
+#      provider: "{{ provider }}"
+#      commands:      
+#        - snmp-server community city123 RO
+#        - snmp-server community pep RO
+#        - snmp-server community private123 RW
+#        - snmp-server location manchester
+
+#        - snmp-server contact arun   
+
+#  - name: deploy snmp commands from config file
+#    ios_config:
+#      src: "./configs/snmp.cfg"
+#      provider: "{{ provider }}"
+
+#  - name: deploy ospf   
+#    ios_config:
+#      src: "./configs/ospf.cfg"
+#      provider: "{{ provider }}"
+
+
+
+#  - name: deploy ospf from jinja2 template
+#    ios_config:
+#      src: "ospf.j2"
+#      provider: "{{ provider }}"   
+
+#    ios_config:
+#      src: "snmp.j2"
+#      provider: "{{ provider }}"
+#    tags: snmp.j2  
+
+
+# - name: generate snmp config from template
+#    template: src=snmp.j2 dest=configs/snmp-auto.cfg 
+
+#  - name: Deploy snmp from auto-generated file
+#    ios_config:
+#      src: "./configs/snmp-auto.cfg"
+#      provider: "{{ provider }}"
+
+
+#  - name: get ospf facts
+#    ospf facts: device={{ inventory_hostname}} interface={{ ospf_interface }}
+ #   register: ospf_data
+
+#  - name: interface ip address used for ospf peering
+#    debug: msg="local router interface ip address {{ ospf_data.ofacts.oif_ip }} on {{ ospf_data.ofacts.oif }}"
+
+
